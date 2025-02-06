@@ -5,5 +5,5 @@ FROM httpd:latest
 COPY index.html /usr/local/apache2/htdocs
 
 # Expose port 80 to access the server
-EXPOSE 80
+EXPOSE 443
 

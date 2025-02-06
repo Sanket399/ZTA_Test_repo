@@ -1,5 +1,5 @@
 # Use the official NGINX base image
-FROM nginx:alpine
+FROM docker.io/library/nginx:alpine
 
 # Set working directory
 WORKDIR /usr/share/nginx/html

@@ -13,6 +13,9 @@ COPY . .
 # Expose port 80
 EXPOSE 80
 
+# Add the HEALTHCHECK instruction
+HEALTHCHECK --interval=30s --timeout=3s \
+  CMD curl -f http://localhost:80/ || exit 1
+
 # Start NGINX server
 CMD ["nginx", "-g", "daemon off;"]
-

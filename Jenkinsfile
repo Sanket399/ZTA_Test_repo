@@ -4,7 +4,7 @@ pipeline {
         SONAR_SCANNER_HOME = tool 'SonarQube'
         DOCKER_IMAGE = 'zta'  // Only image name
         DOCKER_TAG = "v${BUILD_NUMBER}"
-        EC2_HOST = 'ec2-user@34.207.71.152'
+        EC2_HOST = 'ec2-user@34.207.159.185'
         SONAR_HOST_URL = 'http://localhost:9000'
     }
     
@@ -37,6 +37,13 @@ pipeline {
             }
         }
 
+        stage("OWASP Dependency Check") {
+          steps {
+              dependencyCheck additionalArguments: '--scan ./', odcInstallation: 'OWASP'
+              dependencyCheckPublisher pattern: '**/dependency-check-report.xml'
+          }
+        }
+
         stage('Build Docker Image') {
             steps {
                 script {
@@ -45,8 +52,10 @@ pipeline {
             }
         }
         
-        stage(){
-            
+        stage('Trivy Docker Image Scan') {
+            steps{
+                sh "trivy image ${DOCKER_IMAGE}:${DOCKER_TAG} -o trivy-${DOCKER_IMAGE}:${DOCKER_TAG}-report.html"
+            }
         }
 
         stage('Login to Docker Hub & Push Images') {
@@ -72,6 +81,7 @@ pipeline {
                 }
             }
         }
+        
         stage('Deploy to EC2') {
             steps {
                 script {

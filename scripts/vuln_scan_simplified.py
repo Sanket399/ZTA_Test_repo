@@ -3,7 +3,7 @@ import time
 import docker
 from find_viaSSH import find_web_containers_via_ssh
 from zap_scan_almost import run_zap_scan
-from owasp_dep_check import run_dependency_check
+#from owasp_dep_check import run_dependency_check
 
 
 # Initialize Docker client

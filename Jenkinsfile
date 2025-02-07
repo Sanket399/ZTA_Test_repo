@@ -111,22 +111,48 @@ pipeline {
                             docker pull ${dockerUsername}/${dockerImage}:${dockerTag}
                             docker stop zta-container || true
                             docker rm zta-container || true
-                            docker run -d --name zta-container \\
-                                --restart unless-stopped \\
-                                --health-cmd="curl -f http://localhost:80 || exit 1" \\
-                                --health-interval=30s \\
-                                -p 80:80 \\
+                            docker run -d \
+                                --name zta-container \
+                                -p 80:80 \
+                                -p 443:443 \
+                                -v /home/ec2-user/nginx-container/html:/usr/share/nginx/html \
+                                -v /home/ec2-user/nginx-container/conf/nginx.conf:/etc/nginx/conf.d/default.conf \
+                                -v /etc/letsencrypt:/etc/letsencrypt \
                                 ${dockerUsername}/${dockerImage}:${dockerTag}
-        
+                            
                             docker ps | grep zta-container
                             EOL
-        
+                            
                             rm -f ~/.ssh/temp_key
                         """
+                    }
+                }
             }
         }
-    }
-}
+
+        stage('Install Dependencies') {
+            steps {
+                script {
+                    sh 'python3 scripts/install_dependencies.py'
+                }
+            }
+        }
+
+        stage('Find Web Containers') {
+            steps {
+                script {
+                    sh 'python3 scripts/find_viaSSH.py'
+                }
+            }
+        }
+
+        stage('Run Vulnerability Scans') {
+            steps {
+                script {
+                    sh 'python3 scripts/vuln_scan_simplified.py'
+                }
+            }
+        }
     }
     
     post {

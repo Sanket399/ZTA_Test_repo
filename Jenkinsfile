@@ -15,7 +15,7 @@ pipeline {
             }
         }
 
-        stage('Fetch SonarQube Token from Vault and Run Scan') {
+        stage('SAST SCAN') {
             steps {
                 withVault(
                     configuration: [url: 'http://127.0.0.1:8200'],
@@ -58,7 +58,7 @@ pipeline {
             }
         }
 
-        stage('Login to Docker Hub & Push Images') {
+        stage('Push Images to remote registry') {
             steps {
                 script {
                     withVault(

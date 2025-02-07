@@ -164,12 +164,12 @@ def main():
         time.sleep(2)
         
         # Run OWASP ZAP scan if IP and port are available
-        if container.get('host_port') != 'N/A':
+        if container.get('host_port'):
             run_zap_scan("34.207.159.185",container['host_port'])
         time.sleep(2)
 
         # Run Nmap scan
-        if container.get('host_port') != 'N/A':
+        if container.get('host_port'):
             run_nmap_scan_dockerized("34.207.159.185",container['host_port'])
         time.sleep(2)
      

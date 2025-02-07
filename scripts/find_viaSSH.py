@@ -5,7 +5,7 @@ import time
 # Hardcoded EC2 instance details
 REMOTE_HOST = '34.207.159.185'  
 SSH_USER = 'ec2-user'  
-SSH_KEY_PATH = '/home/user/Downloads/zta.pem' # Replace with your actual key path
+SSH_KEY_PATH = '/home/sanket/.ssh/zta.pem' # Replace with your actual key path
 
 
 def find_web_containers_via_ssh():

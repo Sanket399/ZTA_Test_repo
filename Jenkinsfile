@@ -35,7 +35,8 @@ pipeline {
                             userRemoteConfigs: [[
                                 url: "https://${env.GITHUB_TOKEN}@github.com/Sanket399/ZTA_Frontend.git"
                             ]]
-                        ]) 
+                           ])
+                        }   
                     }
                 }
                 stage('Install Dependencies') {

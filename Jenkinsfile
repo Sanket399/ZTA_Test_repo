@@ -23,8 +23,8 @@ pipeline {
                             vaultSecrets: [[
                                 path: 'secret/github',
                                 secretValues: [[vaultKey: 'token', envVar: 'GITHUB_TOKEN']]
-                            ]]
-                    ) { 
+                             ]]
+                        ) { 
                         checkout([
                             $class: 'GitSCM',
                             branches: [[name: 'main']],

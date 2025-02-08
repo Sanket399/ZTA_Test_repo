@@ -18,9 +18,17 @@ pipeline {
                 }
                 stage('Checkout Application Code') {
                     steps {
-                         git url: 'https://github.com/Sanket399/ZTA-ApplicationCode.git', 
-                             branch: 'main',
-                             dir: env.APP_CODE_DIR  // Clone frontend to separate directory
+                        checkout([
+                            $class: 'GitSCM',
+                            branches: [[name: 'main']],
+                            extensions: [[
+                                $class: 'RelativeTargetDirectory',
+                                relativeTargetDir: env.APP_CODE_DIR
+                            ]],
+                            userRemoteConfigs: [[
+                                url: 'https://github.com/Sanket399/ZTA_Frontend.git'
+                            ]]
+                        ]) 
                     }
                 }
                 stage('Install Dependencies') {

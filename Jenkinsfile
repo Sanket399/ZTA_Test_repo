@@ -18,6 +18,13 @@ pipeline {
                 }
                 stage('Checkout Application Code') {
                     steps {
+                        withVault(
+                            configuration: [url: 'http://127.0.0.1:8200'],
+                            vaultSecrets: [[
+                                path: 'secret/github',
+                                secretValues: [[vaultKey: 'token', envVar: 'GITHUB_TOKEN']]
+                            ]]
+                    ) { 
                         checkout([
                             $class: 'GitSCM',
                             branches: [[name: 'main']],
@@ -26,7 +33,7 @@ pipeline {
                                 relativeTargetDir: env.APP_CODE_DIR
                             ]],
                             userRemoteConfigs: [[
-                                url: 'https://github.com/Sanket399/ZTA_Frontend.git'
+                                url: "https://${env.GITHUB_TOKEN}@github.com/Sanket399/ZTA_Frontend.git"
                             ]]
                         ]) 
                     }

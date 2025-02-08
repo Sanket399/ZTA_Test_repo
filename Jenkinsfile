@@ -5,14 +5,22 @@ pipeline {
         DOCKER_IMAGE = 'zta'
         DOCKER_TAG = "v${BUILD_NUMBER}"
         SONAR_HOST_URL = 'http://localhost:9000'
+        APP_CODE_DIR = 'app'
     }
     
     stages {
         stage('Code Checkout & Setup') {
             stages {
-                stage('Checkout Code') {
+                stage('Checkout Infrastructure Code') {
                     steps {
-                        git url: 'https://github.com/Sanket399/ZTA_Test_repo.git', branch: 'main'
+                        checkout scm
+                    }
+                }
+                stage('Checkout Application Code') {
+                    steps {
+                         git url: 'https://github.com/Sanket399/ZTA_Frontend.git', 
+                             branch: 'main',
+                             dir: env.APP_CODE_DIR  // Clone frontend to separate directory
                     }
                 }
                 stage('Install Dependencies') {
@@ -81,9 +89,8 @@ pipeline {
                                     -o ${reportDir}/trivy-report.html \
                                     --format template \
                                     --template '/usr/local/share/trivy/templates/html.tpl' \
-                                    --exit-code 0
+                                    --exit-code 0 
 
-                            
                                 trivy image ${DOCKER_IMAGE}:${DOCKER_TAG} \
                                     -o ${reportDir}/trivy-report.json \
                                     --format json \

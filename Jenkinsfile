@@ -18,7 +18,7 @@ pipeline {
                 }
                 stage('Checkout Application Code') {
                     steps {
-                         git url: 'https://github.com/Sanket399/ZTA_Frontend.git', 
+                         git url: 'https://github.com/Sanket399/ZTA-ApplicationCode.git', 
                              branch: 'main',
                              dir: env.APP_CODE_DIR  // Clone frontend to separate directory
                     }

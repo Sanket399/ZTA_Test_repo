@@ -69,7 +69,7 @@ pipeline {
                             withSonarQubeEnv('SonarQube') {
                                 sh """
                                     ${SONAR_SCANNER_HOME}/bin/sonar-scanner \
-                                        -Dsonar.projectKey=my-project \
+                                        -Dsonar.projectKey=ZTA-test-application \
                                         -Dsonar.sources=. \
                                         -Dsonar.login=\${VAULT_SONAR_TOKEN}
                                 """
@@ -230,6 +230,15 @@ pipeline {
                         }
                     }
                 }
+            }
+        }
+        
+        stage('Deploy Monitoring Containers') {
+            steps {
+                sh '''
+                # Activate Python environment if needed
+                python3 scripts/deploy_monitoring_containers.py
+                '''
             }
         }
     }

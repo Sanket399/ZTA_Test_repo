@@ -38,8 +38,7 @@ pipeline {
                                 """
 
                                 sh """
-                                    git -c http.extraheader="Authorization: bearer ${env.GITHUB_TOKEN}" \
-                                        clone https://github.com/Sanket399/ZTA_Frontend.git ${APP_CODE_DIR}
+                                    git clone https://${GITHUB_TOKEN}@github.com/Sanket399/ZTA_Frontend.git ${APP_CODE_DIR}
                                 """
                             }
                         }

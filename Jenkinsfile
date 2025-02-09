@@ -93,7 +93,7 @@ pipeline {
                 stage('Build Docker Image') {
                     steps {
                         script {
-                            docker.build("${DOCKER_IMAGE}:${DOCKER_TAG}", "--build-arg BUILD_VERSION=${BUILD_NUMBER} .")
+                            docker.build("${DOCKER_IMAGE}:${DOCKER_TAG}", "--build-arg BUILD_VERSION=${BUILD_NUMBER} ${APP_CODE_DIR}")
                         }
                     }
                 }

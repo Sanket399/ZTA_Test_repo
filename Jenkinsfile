@@ -38,7 +38,7 @@ pipeline {
                                 """
 
                                 sh """
-                                    git clone https://${GITHUB_TOKEN}@github.com/Sanket399/ZTA_Frontend.git ${APP_CODE_DIR}
+                                    git clone https://${GITHUB_TOKEN}@github.com/Sanket399/ZTA-ApplicationCode.git ${APP_CODE_DIR}
                                 """
                             }
                         }

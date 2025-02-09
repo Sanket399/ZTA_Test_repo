@@ -30,6 +30,13 @@ pipeline {
                             ]]
                         ) {
                             script {
+
+                                sh """
+                                    if [ -d "${APP_CODE_DIR}" ]; then
+                                        rm -rf ${APP_CODE_DIR}
+                                    fi
+                                """
+
                                 sh """
                                     git -c http.extraheader="Authorization: bearer ${env.GITHUB_TOKEN}" \
                                         clone https://github.com/Sanket399/ZTA_Frontend.git ${APP_CODE_DIR}

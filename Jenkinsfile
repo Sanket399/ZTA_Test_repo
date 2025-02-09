@@ -16,24 +16,29 @@ pipeline {
                         checkout scm
                     }
                 }
-                
+               
                 stage('Checkout Application Code') {
                     steps {
-                        // Use checkout step with GitSCM to clone into a specific directory
-                        checkout([
-                            $class: 'GitSCM',
-                            branches: [[name: 'main']],
-                            extensions: [[
-                                $class: 'RelativeTargetDirectory',
-                                relativeTargetDir: env.APP_CODE_DIR
-                            ]],
-                            userRemoteConfigs: [[
-                                url: 'https://github.com/Sanket399/ZTA_Frontend.git'
+                        withVault(
+                            configuration: [
+                                vaultUrl: 'http://127.0.0.1:8200',  // Correct parameter name
+                                engineVersion: 2
+                            ],
+                            vaultSecrets: [[
+                                path: 'secret/github',
+                                secretValues: [[vaultKey: 'token', envVar: 'GITHUB_TOKEN']]
                             ]]
-                        ])
+                        ) {
+                            script {
+                                sh """
+                                    git -c http.extraheader="Authorization: bearer ${env.GITHUB_TOKEN}" \
+                                        clone https://github.com/Sanket399/ZTA_Frontend.git ${APP_CODE_DIR}
+                                """
+                            }
+                        }
                     }
                 }
-                
+
                 stage('Install Dependencies') {
                     steps {
                         script {
